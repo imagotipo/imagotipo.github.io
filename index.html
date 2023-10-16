@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Descifrador César</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding: 20px;
+            position: relative; /* Agregamos posición relativa para que la marca de agua sea relativa al cuerpo de la página */
+        }
+
+        h1 {
+            color: #FF0066;
+        }
+
+        label, input, button, p {
+            display: block;
+            margin: 10px auto;
+            width: 50%;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 5px;
+            border: 2px solid #FF0066;
+            background-color: #333;
+            color: #FF0066;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #FF0066;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #ff0044;
+        }
+
+        p {
+            border: 2px solid #FF0066;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 5px;
+            color: #00f; /* Cambiamos el color a azul brillante */
+        }
+
+        /* Estilo para la marca de agua */
+        .watermark {
+            position: absolute; /* Cambiamos a posición absoluta */
+            bottom: 10px; /* Lo colocamos en la parte inferior */
+            left: 10px; /* Lo colocamos en la parte izquierda */
+            font-size: 20px;
+            color: #fff;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Descifrador César</h1>
+    <label for="cipherText">Texto cifrado:</label>
+    <input type="text" id="cipherText" placeholder="Texto cifrado"><br>
+    <label for="shift">Desplazamiento:</label>
+    <input type="number" id="shift" placeholder="Desplazamiento"><br>
+    <button onclick="decryptCesar()">Descifrar</button><br>
+    <p>Texto descifrado: <span id="decryptedText"></span></p>
+
+    <!-- Marca de agua -->
+    <div class="watermark">FORA070609HNLLMLA0</div>
+
+    <script>
+        function decryptCesar() {
+            const cipherText = document.getElementById("cipherText").value;
+            const shift = parseInt(document.getElementById("shift").value);
+
+            if (!cipherText || isNaN(shift)) {
+                alert("Por favor, ingrese un texto cifrado y un valor de desplazamiento válido.");
+                return;
+            }
+
+            const decryptedText = caesarDecipher(cipherText, shift);
+            const decryptedTextElement = document.getElementById("decryptedText");
+            decryptedTextElement.textContent = decryptedText;
+        }
+
+        function caesarDecipher(cipherText, shift) {
+            let decryptedText = "";
+
+            for (let i = 0; i < cipherText.length; i++) {
+                let char = cipherText.charAt(i);
+
+                if (char.match(/[a-zA-Z]/)) {
+                    let isUpperCase = char === char.toUpperCase();
+                    char = String.fromCharCode(((char.charCodeAt(0) - (isUpperCase ? 65 : 97) - shift + 26) % 26) + (isUpperCase ? 65 : 97));
+                }
+
+                decryptedText += char;
+            }
+
+            return decryptedText;
+        }
+    </script>
+</body>
+</html>
